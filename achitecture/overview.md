@@ -23,6 +23,11 @@ Available languages:
     - Hebrew (heb);
 - 4th round (german & celtic languages):
     - Irish (gle);
+    - Welsh (cym);
+    - Breton (bre);
+    - Cornish (cor);
+    - Manx (glv);
+    - Scottish Gaelic (gla);
     - Low German (nds);
     - Luxembourgish (ltz);
     - Danish (dan);
@@ -34,7 +39,7 @@ Available languages:
     - Catalan (cat);
     - Occitan (oci);
     - Albanian (sqi);
-- 6th round (slavic languages+romanian):
+- 6th round (slavic languages+romanian+crimean tatar):
     - Polish (pol);
     - Czech (ces);
     - Slovak (slk);
@@ -46,6 +51,7 @@ Available languages:
     - Slovene (slv);
     - Belarusian (bel);
     - Romanian (ron);
+    - Crimean Tatar (crh);
 - 7th round (baltic languages):
     - Latvian (lav);
     - Lithuanian (lit);
@@ -90,7 +96,11 @@ Available languages:
 
 ### Profile
 
-- handle_name (human readable identifier of an account);
+- handle_name (human readable identifier of an account):
+    - minimal length: 3
+    - maximal legnth: 50
+    - allowed symbols: A-Z,a-z,1-9,_.-,+,$
+    - it must be unique in whole system
 - Full name (max 50 symbols);
 - Email address(es);
 - Phone number(s);
