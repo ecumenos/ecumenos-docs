@@ -1,8 +1,38 @@
 # PDS (Personal Data Server)
 
-PDS dedicated for storing profile data, direct/group messages, and posts & quick posts that are placed on personal page.
+PDS dedicated for storing profile data, direct/group messages, and posts & quick-posts that are placed on personal page.
 
 ## Components
+
+### BFF (Backend for Frontend)
+
+SSR frontend application with REST API endpoints.
+
+#### Description
+
+It serves as gateway (REST API) and as server that serves Browser Frontend.
+This service works like proxy for WRITE commands and it can interact with database directly for READ queries.
+The service interacting with Orbis Socialises.
+
+#### Endpoints
+
+- search:
+    - endpoint for searching of Orbis Socialis contant (use Orbis Socialis search);
+    - endpoint for searching accounts;
+- feed:
+    - endpoints for getting feed;
+- authorization:
+    - endpoint for creating an account;
+    - endpoint for retrieving an account's data;
+    - endpoint for updating an account's data;
+    - endpoint for deleting an account;
+    - endpoint for creating a session;
+    - endpoint for refreshing a session;
+    - endpoint for closing a session;
+    - endpoint for updating password'
+- posts:
+- quick-posts:
+- groups:
 
 ### Blockchain Peer
 
@@ -20,6 +50,10 @@ location of account looks like:
 }
 ```
 Where `aid` = `account id`, `pid` = `PDS id`, `oid` = `orbis socialis id`.
+
+PoA (Proof of Authority) looks most preferable for now.
+
+#### Endpoints
 
 ### Accounts Ledger
 

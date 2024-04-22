@@ -115,23 +115,23 @@ Available languages:
         - Read posts;
         - Comment posts;
         - React on posts;
-        - Read quick posts;
-        - Comment quick posts;
-        - React on quick posts;
+        - Read quick-posts;
+        - Comment quick-posts;
+        - React on quick-posts;
     - Notifications:
 
 #### (Un)Following mechanics
 
-### Quick post (the same as tweet in twitter) posting
+### quick-post (the same as tweet in twitter) posting
 
 It can contain:
 - text (limit: max 300 symbols);
 - image (Size 1024x512px	Max upload size of 5Mb (or 3Mb for animated GIFs). Supports PNG, GIF or JPEG);
 - video (Max length of video uploads	2'20" (140 seconds)	MP4 video format with H264 format with AAC audio. Max upload of 512MB);
 
-#### Commenting of quick posts
+#### Commenting of quick-posts
 
-### Feed of quick posts
+### Feed of quick-posts
 
 ### Posting posts on own page
 
