@@ -105,7 +105,7 @@ Available languages:
 - Email address(es);
 - Phone number(s);
 - Avatar image (Size 400x400px	Max upload size of 2Mb. Supports PNG, GIF or JPEG);
-- Header image (Size	1500x500px	Max upload size of 5Mb. Supports PNG or JPEG);
+- Header image (Size 1500x500px	Max upload size of 5Mb. Supports PNG or JPEG);
 - Bio (max 1024 symbols);
 - Country(ies);
 - Language(s);

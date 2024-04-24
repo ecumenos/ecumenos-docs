@@ -8,6 +8,7 @@ Besides, here is stored public (not private, and not personal stored at user's p
 ### Crawler
 
 Worker that works rather like an actor than like HTTP server.
+This service should be written in golang. Use gRPC in needs.
 
 #### Description
 
@@ -16,7 +17,7 @@ Besides, this service keep actual accounts information by requesting PDSs of res
 
 ### Ingress Service
 
-REST API server for writing commands.
+Golang gRPC  server for writing commands.
 
 #### Description
 
@@ -65,7 +66,7 @@ It is one of key services of the Orbis Socialis. It holds all main functionality
 
 ### API Gateway
 
-REST API server for retrieving data by queries.
+Golang REST API server for retrieving data by queries and act as proxy for writing commands.
 
 #### Description
 
@@ -106,6 +107,7 @@ It is one of key services of the Orbis Socialis. It holds all main functionality
 ### Admin
 
 SSR frontend application with REST API endpoints.
+NextJS is good technology for this service.
 
 #### Description
 
