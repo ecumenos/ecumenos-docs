@@ -42,12 +42,16 @@ The service is golang gRPC server that serves as blockchain peer.
 The service dedicated for:
 - storing of chains of actions with accounts (creation, deletation, transitions). It is sync with other PDSs;
 - storing state of location all accounts (World State);
+Good choice for storage is local instance of SQLite.
+Use `MD6-256` as hash function.
 
-location of account looks like:
+When the service is starting up it calls zookeeper to get full list of PDSs.
+After the service call validator PDS from the list to get last transactions from shutting down timepoint.
+Then transactions are applied and World State is updated.
+After the service can process requests.
 
-
-
-PoA (Proof of Authority) looks most preferable for now.
+Validator is chosen by zookeeper. Beside, zookeeper should check status of all PDSs to choose validator by the best way for next time.
+When the service call some other service and it doesn't response for 30s it should call zookeeper to report it. Then zookeeper do the request by itself and if it doesn't response it write this information to the register and this information will be considered next time when validator is choosing.
 
 #### How the Blockchain works
 
@@ -98,17 +102,115 @@ Structure of a block should looks like:
 
 #### Endpoints
 
-### Accounts Ledger
+- endpoint for getting service status (`GET/health`)
+- endpoint for getting PDSs with statuses
+- endpoint for creating transaction (`POST/txs`)
+- endpoint for running validation in validator (`POST/validate`)
+- endpoint for retrieving blocks after some block hash (`GET/blocks?from=9b90c5a68b78e1dbf215e66102df54f60855bfcd843318627f13cf84896a2a39`)
+- endpoint for getting state of accounts (`GET/accounts?ids=1234567890,1234567891,1234567892`) it should works only with IDs
+
+#### Entities
+
+####
+
+### Accounts Service
 
 It is golang gRPC server that oprates with account's profile data and account's personal posts, quick-posts, and albums.
 
 #### Description
 
 The service dedicated for:
-- CRUD actions with account records;
-- providing authentication functionality like (un)authorization;
-- sending an account's data to next PDS services cluster while transition on an account to another PDS;
-- providing generation & storing IDs functionality;
+- account & account's data functionality
+- providing uniqueness of ID generation
+- messanger functionality
+- authorization & authentication functionality
+- interaction with other PDS clusters
+- mailer functionality
+
+#### Endpoints:
+
+#### Entities
+
+##### Account Entity
+
+| Field name       | Type                                                               |
+|------------------|--------------------------------------------------------------------|
+| id               | numeric string                                                     |
+| handle_name      | string (min: 3, max: 50, allowed chars: `A-Z`, `a-z`, `1-9`, `_`, `-`, `+`, `$`, `€`, `£`, `¥`, `₣`, `₹`, `₪`, `₩`, `₴`) |
+| address          | string ({{zookeeper_prefix}}:{{handle_name}}@{{domain_name}})      |
+| full_name        | string (max: 50)                                                   |
+| emails           | array of email strings                                             |
+| phone_numbers    | array of phone number strings                                      |
+| avatar_image_url | URL for profile image                                              |
+| header_image_url | URL for profile header image                                       |
+| bio              | string (max: 1024)                                                 |
+| countries        | array of lowercased strings (ISO 3166-1 alpha-3 country code)      |
+| languages        | array of lowercased strings (ISO 639-2:1998 alpha-3 language code) |
+| created_at       | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| last_modified_at | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| password_hash    | string                                                             |
+| public_key       | string                                                             |
+| private_key      | encrypted string                                                   |
+
+##### Account Setting Entity
+
+| Field name                  | Type                            |
+|-----------------------------|---------------------------------|
+| account_id                  | numeric string                  |
+| perm_read_profile_info      | enum `Permission`               |
+| perm_read_profile_posts     | enum `Permission`               |
+| perm_comment_profile_posts  | enum `Permission`               |
+| perm_react_profile_posts    | enum `Permission`               |
+| perm_read_profile_qposts    | enum `Permission`               |
+| perm_comment_profile_qposts | enum `Permission`               |
+| perm_react_profile_qposts   | enum `Permission`               |
+| notif_❓                    |                                 |
+| theme_color_mode            | enum `ColorMode`                |
+| theme_zoom                  | integer (from 50% to 200%)      |
+| theme_msg_format            | enum `MessageFormat`            |
+| theme_name_format           | enum `NameFormat`               |
+| time_format                 | 12/24                           |
+| timezone                    | string ("Continent/City" (e.g., "America/New_York", "Europe/London")) |
+
+```ts
+enum Permission {
+    Public
+    Limited
+    Private
+}
+```
+
+```ts
+enum ColorMode {
+    Dark
+    Light
+}
+```
+
+```ts
+enum MessageFormat {
+    SenderMessageDatetime
+    SenderDatetimeMessage
+}
+```
+
+```ts
+enum NameFormat {
+    FullAndHandle
+    JustHandle
+}
+```
+
+##### Sessions
+
+| Field name                  | Type                                                    |
+|-----------------------------|---------------------------------------------------------|
+| id                          | numeric string                                          |
+| account_id                  | numeric string                                          |
+| token                       | string                                                  |
+| refresh_token               | string                                                  |
+| expired_at                  | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00") |
+| created_at                  | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00") |
 
 ### Admin
 
@@ -138,3 +240,9 @@ We have:
 
 Besides, each PDS store ID that was created by it and never generate this ID again.
 Keep in mind that an accounts are portable and the account that was created in the PDS could be transfered to some another PDS.
+
+### Cryptography Security
+
+Encryption is done by some asymetric algorithm.
+Public key is stored at account profile.
+Private key is encrypted by symethric encryption with account's password and stored in account profile.
