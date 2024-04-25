@@ -15,6 +15,8 @@ This service should be written in golang. Use gRPC in needs.
 It serves for crawl records from other Orbis Socialis clusters.
 Besides, this service keep actual accounts information by requesting PDSs of residents of this Orbis Socialis.
 
+#### Entities
+
 ### Ingress Service
 
 Golang gRPC  server for writing commands.
@@ -64,6 +66,105 @@ It is one of key services of the Orbis Socialis. It holds all main functionality
         - endpoint for updating an information about group album's media
         - endpoint for deleting media from a group album
 
+#### Entities
+
+##### Group
+
+| Field name         | Type                                                               |
+|--------------------|--------------------------------------------------------------------|
+| *id                | numeric string                                                     |
+| *name              | string                                                             |
+| *description       | string                                                             |
+| *profile_image_url | URL string                                                         |
+| *header_image_url  | URL string                                                         |
+| *created_at        | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| last_modified_at   | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| privacy            | enum `GroupPrivacy`                                                |
+
+```ts
+enum GroupPrivacy {
+    Public
+    Private
+}
+```
+
+##### Group Custom Role
+
+| Field name         | Type                                                               |
+|--------------------|--------------------------------------------------------------------|
+| *id                | numeric string                                                     |
+| *group_id          | numeric string                                                     |
+| *role              | enum `BaseRole`                                                    |
+| *name              | string                                                             |
+| *priority          | integer                                                            |
+| *created_at        | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| last_modified_at   | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+
+```ts
+enum BaseRole {
+    Admin
+    Moderator
+    Member
+    PendingMember
+    Banned
+}
+```
+
+##### Group Participant
+
+| Field name         | Type                                                               |
+|--------------------|--------------------------------------------------------------------|
+| *id                | numeric string                                                     |
+| *account_id        | numeric string                                                     |
+| *group_id          | numeric string                                                     |
+| *role              | string ({{`enum BaseRole`}}::{{group_custom_role_id}})             |
+| *joined_at         | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| last_modified_at   | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+
+##### Group Post
+
+| Field name         | Type                                                               |
+|--------------------|--------------------------------------------------------------------|
+| *id                | numeric string                                                     |
+| *created_at        | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| last_modified_at   | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| *group_id          | numeric string                                                     |
+
+##### Topic
+
+| Field name         | Type                                                               |
+|--------------------|--------------------------------------------------------------------|
+| *id                | numeric string                                                     |
+| *created_at        | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| last_modified_at   | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| *group_id          | numeric string                                                     |
+
+##### Topic Record
+
+| Field name         | Type                                                               |
+|--------------------|--------------------------------------------------------------------|
+| *id                | numeric string                                                     |
+| *created_at        | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| last_modified_at   | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| *group_id          | numeric string                                                     |
+
+##### Group Album
+
+| Field name         | Type                                                               |
+|--------------------|--------------------------------------------------------------------|
+| *id                | numeric string                                                     |
+| *created_at        | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| last_modified_at   | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| *group_id          | numeric string                                                     |
+
+##### Media
+
+| Field name         | Type                                                               |
+|--------------------|--------------------------------------------------------------------|
+| *id                | numeric string                                                     |
+| *created_at        | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| last_modified_at   | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+
 ### API Gateway
 
 Golang REST API server for retrieving data by queries and act as proxy for writing commands.
@@ -99,6 +200,7 @@ It is one of key services of the Orbis Socialis. It holds all main functionality
 - groups:
     - endpoint for retrieving the account's groups
     - endpoint for retrieving the group's information
+    - endpoint for retrieving the group's posts
     - endpoint for retrieving the group's topics
     - endpoint for retrieving the group's topic's records
     - endpoint for retrieving the group's albums
@@ -112,3 +214,36 @@ NextJS is good technology for this service.
 #### Description
 
 The service provides functionality for configuring the Orbis Socialis and for setting moderation rules, and tools for doing the moderation.
+
+#### Entities
+
+##### Admin
+
+| Field name                   | Type                            |
+|------------------------------|---------------------------------|
+| *id                          | numeric string                  |
+| *email                       | email string                    |
+| *password hash               | string                          |
+
+## Decisions
+
+### Storing of media files
+
+Ecumenos, being a decentralized social networking platform, can have variations in how media files are stored based on the instance's configuration and hosting setup.
+However, the default behavior and common practice for our instances is to store media files on the local filesystem of the server hosting the instance.
+
+When a user uploads media content (e.g., images) to our services, the files are typically saved to a designated directory on the server's filesystem. Our instances use a structure where media files are organized based on their content type and date of upload, making it easier to manage and retrieve them when needed.
+
+For example, media files may be stored in directories like:
+
+```bash
+/media/
+   └── attachments/
+       ├── preview/
+       ├── original/
+       └── small/
+```
+
+In this structure, the "attachments" directory contains subdirectories for different sizes or versions of the uploaded media files, such as "preview" for thumbnail images, "original" for the original uploaded files, and "small" for smaller versions optimized for display.
+
+It's important to note that the service's instances can be customized and configured by instance administrators, so the actual storage location and structure may vary based on their preferences and setup. Additionally, some instances may utilize external storage services or cloud storage providers (such as Amazon S3 or Google Cloud Storage) for media storage, especially for larger instances or to offload storage requirements from the server's local filesystem.

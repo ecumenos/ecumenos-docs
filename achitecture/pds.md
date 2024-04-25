@@ -133,44 +133,59 @@ The service dedicated for:
 
 ##### Account Entity
 
-| Field name       | Type                                                               |
-|------------------|--------------------------------------------------------------------|
-| id               | numeric string                                                     |
-| handle_name      | string (min: 3, max: 50, allowed chars: `A-Z`, `a-z`, `1-9`, `_`, `-`, `+`, `$`, `€`, `£`, `¥`, `₣`, `₹`, `₪`, `₩`, `₴`) |
-| address          | string ({{zookeeper_prefix}}:{{handle_name}}@{{domain_name}})      |
-| full_name        | string (max: 50)                                                   |
-| emails           | array of email strings                                             |
-| phone_numbers    | array of phone number strings                                      |
-| avatar_image_url | URL for profile image                                              |
-| header_image_url | URL for profile header image                                       |
-| bio              | string (max: 1024)                                                 |
-| countries        | array of lowercased strings (ISO 3166-1 alpha-3 country code)      |
-| languages        | array of lowercased strings (ISO 639-2:1998 alpha-3 language code) |
-| created_at       | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
-| last_modified_at | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
-| password_hash    | string                                                             |
-| public_key       | string                                                             |
-| private_key      | encrypted string                                                   |
+| Field name        | Type                                                               |
+|-------------------|--------------------------------------------------------------------|
+| *id               | numeric string                                                     |
+| *handle_name      | string                                                             |
+| *address          | string                                                             |
+| *full_name        | string (max: 50)                                                   |
+| emails            | array of email strings                                             |
+| phone_numbers     | array of phone number strings                                      |
+| avatar_image_url  | URL string                                                         |
+| header_image_url  | URL string                                                         |
+| bio               | string (max: 1024)                                                 |
+| countries         | array of lowercased strings (ISO 3166-1 alpha-3 country code)      |
+| languages         | array of lowercased strings (ISO 639-2:1998 alpha-3 language code) |
+| *created_at       | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| last_modified_at  | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| *password_hash    | string                                                             |
+| *public_key       | string                                                             |
+| *private_key      | encrypted string                                                   |
+
+Handle name requirements:
+- min length: 3;
+- max length: 50;
+- allowed chars: `A-Z`, `a-z`, `1-9`, `_`, `-`, `+`, `$`, `€`, `£`, `¥`, `₣`, `₹`, `₪`, `₩`, `₴`;
+
+Address composition: `{{handle_name}}@{{domain_name}}#{{zookeeper_prefix}}`
+
+Example:
+
+zookeeper_prefix=zk_ukr1,
+handle_name=john_doe
+domain_name=lviv.ukr1
+
+address=john_doe@lviv.ukr1#zk_ukr1
 
 ##### Account Setting Entity
 
-| Field name                  | Type                            |
-|-----------------------------|---------------------------------|
-| account_id                  | numeric string                  |
-| perm_read_profile_info      | enum `Permission`               |
-| perm_read_profile_posts     | enum `Permission`               |
-| perm_comment_profile_posts  | enum `Permission`               |
-| perm_react_profile_posts    | enum `Permission`               |
-| perm_read_profile_qposts    | enum `Permission`               |
-| perm_comment_profile_qposts | enum `Permission`               |
-| perm_react_profile_qposts   | enum `Permission`               |
-| notif_❓                    |                                 |
-| theme_color_mode            | enum `ColorMode`                |
-| theme_zoom                  | integer (from 50% to 200%)      |
-| theme_msg_format            | enum `MessageFormat`            |
-| theme_name_format           | enum `NameFormat`               |
-| time_format                 | 12/24                           |
-| timezone                    | string ("Continent/City" (e.g., "America/New_York", "Europe/London")) |
+| Field name                   | Type                            |
+|------------------------------|---------------------------------|
+| *account_id                  | numeric string                  |
+| *perm_read_profile_info      | enum `Permission`               |
+| *perm_read_profile_posts     | enum `Permission`               |
+| *perm_comment_profile_posts  | enum `Permission`               |
+| *perm_react_profile_posts    | enum `Permission`               |
+| *perm_read_profile_qposts    | enum `Permission`               |
+| *perm_comment_profile_qposts | enum `Permission`               |
+| *perm_react_profile_qposts   | enum `Permission`               |
+| notif_❓                     |                                 |
+| *theme_color_mode            | enum `ColorMode`                |
+| *theme_zoom                  | integer (from 50% to 200%)      |
+| *theme_msg_format            | enum `MessageFormat`            |
+| *theme_name_format           | enum `NameFormat`               |
+| *time_format                 | 12/24                           |
+| *timezone                    | string ("Continent/City" (e.g., "America/New_York", "Europe/London")) |
 
 ```ts
 enum Permission {
@@ -203,14 +218,14 @@ enum NameFormat {
 
 ##### Sessions
 
-| Field name                  | Type                                                    |
-|-----------------------------|---------------------------------------------------------|
-| id                          | numeric string                                          |
-| account_id                  | numeric string                                          |
-| token                       | string                                                  |
-| refresh_token               | string                                                  |
-| expired_at                  | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00") |
-| created_at                  | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00") |
+| Field name                   | Type                                                    |
+|------------------------------|---------------------------------------------------------|
+| *id                          | numeric string                                          |
+| *account_id                  | numeric string                                          |
+| *token                       | string                                                  |
+| *refresh_token               | string                                                  |
+| *expired_at                  | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00") |
+| *created_at                  | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00") |
 
 ### Admin
 

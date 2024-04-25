@@ -45,3 +45,5 @@ Besides, for some plugins it is okay to use resources of user's machine. So, it 
 #### Endpoints
 
 #### Entities
+
+## Decisions
