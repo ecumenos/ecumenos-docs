@@ -218,9 +218,13 @@ enum NameFormat {
 
 ##### Sessions
 
+jwt.io
+
 | Field name                   | Type                                                    |
 |------------------------------|---------------------------------------------------------|
 | *id                          | numeric string                                          |
+| ❓provider_id                | google/facebook/cognito                                 |
+| ❓provider_user_id           | string                                                  |
 | *account_id                  | numeric string                                          |
 | *token                       | string                                                  |
 | *refresh_token               | string                                                  |

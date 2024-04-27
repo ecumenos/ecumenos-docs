@@ -112,14 +112,15 @@ enum BaseRole {
 
 ##### Group Participant
 
-| Field name         | Type                                                               |
-|--------------------|--------------------------------------------------------------------|
-| *id                | numeric string                                                     |
-| *account_id        | numeric string                                                     |
-| *group_id          | numeric string                                                     |
-| *role              | string ({{`enum BaseRole`}}::{{group_custom_role_id}})             |
-| *joined_at         | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
-| last_modified_at   | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| Field name            | Type                                                               |
+|-----------------------|--------------------------------------------------------------------|
+| *id                   | numeric string                                                     |
+| *account_id           | numeric string                                                     |
+| *group_id             | numeric string                                                     |
+| *base_role            | `enum BaseRole`                                                    |
+| *group_custom_role_id | numeric string                                                     |
+| *joined_at            | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| last_modified_at      | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
 
 ##### Group Post
 
