@@ -17,7 +17,7 @@ The service interacting with Orbis Socialis (pl.).
 #### Endpoints
 
 - search:
-    - endpoint for searching of Orbis Socialis contant (use Orbis Socialis search);
+    - endpoint for searching of Orbis Socialis content (use Orbis Socialis search);
     - endpoint for searching accounts;
 - feed:
     - endpoints for getting feed;
@@ -115,14 +115,14 @@ Structure of a block should looks like:
 
 ### Accounts Service
 
-It is golang gRPC server that oprates with account's profile data and account's personal posts, quick-posts, and albums.
+It is golang gRPC server that operates with account's profile data and account's personal posts, quick-posts, and albums.
 
 #### Description
 
 The service dedicated for:
 - account & account's data functionality
 - providing uniqueness of ID generation
-- messanger functionality
+- messenger functionality
 - authorization & authentication functionality
 - interaction with other PDS clusters
 - mailer functionality
@@ -146,22 +146,38 @@ The service dedicated for:
 | bio               | string (max: 1024)                                                 |
 | countries         | array of lowercased strings (ISO 3166-1 alpha-3 country code)      |
 | languages         | array of lowercased strings (ISO 639-2:1998 alpha-3 language code) |
-| *created_at       | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
-| last_modified_at  | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| *created_at       | datetime (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| last_modified_at  | datetime (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
 | *password_hash    | string                                                             |
 | *public_key       | string                                                             |
 | *private_key      | encrypted string                                                   |
+| birthday          | datetime (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| sex               | `enum Sex`                                                         |
+
+```ts
+enum Sex {
+    Male
+    Female
+}
+```
 
 Handle name requirements:
 - min length: 3;
 - max length: 50;
-- allowed chars: `A-Z`, `a-z`, `1-9`, `_`, `-`, `+`, `$`, `€`, `£`, `¥`, `₣`, `₹`, `₪`, `₩`, `₴`;
+- allowed chars:
+    - `A-Z`;
+    - `a-z`;
+    - `Α-Ω`;
+    - `α-ω`;
+    - `1-9`;
+    - `ē`, `ā`, `ō`, `ī`, `ū`, `Č`, `č`, `Ď`, `ď`, `É`, `é`, `Ě`, `ě`, `Ř`, `ř`, `Š`, `š`, `Á`, `á`, `Ą`, `ą`, `Ć`, `ć`, `Ę`, `ę`, `Ł`, `ł`, `Ń`, `ń`, `Ó`, `ó`, `Ś`, `ś`, `Ź`, `ź`, `Ż`, `ż`, `ẞ`, `ß`, `Ä`, `ä`, `Ö`, `ö`, `Ü`, `ü`, `Æ`, `æ`, `Ø`, `ø`, `Å`, `å`;
+    - special chars: `_`, `-`, `+`, `$`, `€`, `£`, `¥`, `₣`, `₹`, `₪`, `₩`, `₴`;
 
-Address composition: `{{handle_name}}@{{domain_name}}#{{zookeeper_prefix}}`
+Address composition: `{{handle_name}}@{{domain_name}}#{{zookeeper_suffix}}`
 
 Example:
 
-zookeeper_prefix=zk_ukr1,
+zookeeper_suffix=zk_ukr1,
 handle_name=john_doe
 domain_name=lviv.ukr1
 
@@ -228,8 +244,8 @@ jwt.io
 | *account_id                  | numeric string                                          |
 | *token                       | string                                                  |
 | *refresh_token               | string                                                  |
-| *expired_at                  | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00") |
-| *created_at                  | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00") |
+| *expired_at                  | datetime (RFC3339, example "2006-01-02T15:04:05Z07:00") |
+| *created_at                  | datetime (RFC3339, example "2006-01-02T15:04:05Z07:00") |
 
 ### Admin
 

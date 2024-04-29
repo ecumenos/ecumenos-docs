@@ -30,7 +30,7 @@ It is one of key services of the Orbis Socialis. It holds all main functionality
 - accounts:
     - attaching an account to the Orbis Socialis service
     - disattaching an account from the Orbis Socialis service
-    - transfering an account from one Orbis Socialis service to another one
+    - transferring an account from one Orbis Socialis service to another one
 - posts:
     - endpoint for creation of record of publisher's post;
     - endpoint for deleting of record of publisher's post;
@@ -77,8 +77,8 @@ It is one of key services of the Orbis Socialis. It holds all main functionality
 | *description       | string                                                             |
 | *profile_image_url | URL string                                                         |
 | *header_image_url  | URL string                                                         |
-| *created_at        | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
-| last_modified_at   | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| *created_at        | datetime (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| last_modified_at   | datetime (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
 | privacy            | enum `GroupPrivacy`                                                |
 
 ```ts
@@ -97,8 +97,8 @@ enum GroupPrivacy {
 | *role              | enum `BaseRole`                                                    |
 | *name              | string                                                             |
 | *priority          | integer                                                            |
-| *created_at        | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
-| last_modified_at   | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| *created_at        | datetime (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| last_modified_at   | datetime (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
 
 ```ts
 enum BaseRole {
@@ -119,16 +119,16 @@ enum BaseRole {
 | *group_id             | numeric string                                                     |
 | *base_role            | `enum BaseRole`                                                    |
 | *group_custom_role_id | numeric string                                                     |
-| *joined_at            | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
-| last_modified_at      | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| *joined_at            | datetime (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| last_modified_at      | datetime (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
 
 ##### Group Post
 
 | Field name         | Type                                                               |
 |--------------------|--------------------------------------------------------------------|
 | *id                | numeric string                                                     |
-| *created_at        | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
-| last_modified_at   | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| *created_at        | datetime (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| last_modified_at   | datetime (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
 | *group_id          | numeric string                                                     |
 
 ##### Topic
@@ -136,8 +136,8 @@ enum BaseRole {
 | Field name         | Type                                                               |
 |--------------------|--------------------------------------------------------------------|
 | *id                | numeric string                                                     |
-| *created_at        | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
-| last_modified_at   | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| *created_at        | datetime (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| last_modified_at   | datetime (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
 | *group_id          | numeric string                                                     |
 
 ##### Topic Record
@@ -145,8 +145,8 @@ enum BaseRole {
 | Field name         | Type                                                               |
 |--------------------|--------------------------------------------------------------------|
 | *id                | numeric string                                                     |
-| *created_at        | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
-| last_modified_at   | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| *created_at        | datetime (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| last_modified_at   | datetime (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
 | *group_id          | numeric string                                                     |
 
 ##### Group Album
@@ -154,8 +154,8 @@ enum BaseRole {
 | Field name         | Type                                                               |
 |--------------------|--------------------------------------------------------------------|
 | *id                | numeric string                                                     |
-| *created_at        | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
-| last_modified_at   | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| *created_at        | datetime (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| last_modified_at   | datetime (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
 | *group_id          | numeric string                                                     |
 
 ##### Media
@@ -163,8 +163,8 @@ enum BaseRole {
 | Field name         | Type                                                               |
 |--------------------|--------------------------------------------------------------------|
 | *id                | numeric string                                                     |
-| *created_at        | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
-| last_modified_at   | timedate (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| *created_at        | datetime (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| last_modified_at   | datetime (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
 
 ### API Gateway
 

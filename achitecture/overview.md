@@ -55,7 +55,7 @@ Available languages:
 - 7th round (baltic languages):
     - Latvian (lav);
     - Lithuanian (lit);
-- 8th round (finno-hungerian languages):
+- 8th round (Finno-Ugric languages):
     - Estonian (est);
     - Finnish (fin);
     - Hungarian (hun);
@@ -92,13 +92,35 @@ Available languages:
 
 ### Authorization
 
+#### By handle_name and password
+
+#### ❓ By centralized authorization provider
+
+##### ❓ Auth0
+
+##### ❓ Firebase Auth
+
+##### ❓ Clerk
+
+##### ❓ KeyCloak
+
+##### ❓ Cognito
+
+##### ❓ SuperTokens
+
+##### ❓ Nhost
+
+##### ❓ By Google
+
+##### ❓ By Facebook
+
 #### Changing password
 
 ### Profile
 
 - handle_name (human readable identifier of an account):
     - minimal length: 3
-    - maximal legnth: 50
+    - maximal length: 50
     - allowed symbols: A-Z,a-z,1-9,_.-,+,$
     - it must be unique in whole system
 - Full name (max 50 symbols);
@@ -120,54 +142,112 @@ Available languages:
         - React on quick-posts;
     - Notifications:
 
-#### (Un)Following mechanics
+#### ❗(Un)Following mechanics
 
-### quick-post (the same as tweet in twitter) posting
+### ❗Content creating
 
-It can contain:
+#### Series
+
+It is some kind of labeling of content entities to categorize it.
+For example you can create seria `Rome` and add qposts, posts, albums with adding label of this seria. Then you can go to tab of series, pick `Rome` seria and consume the content of this seria.
+
+#### ❗Image-based posts (albums)
+
+#### ❗Short form content (stories/reels)
+
+#### ❓ Short-Form Videos
+
+#### ❓❓ Long-Form Videos
+
+#### ❓❓ Live Streams
+
+#### ❗Polls & Questions
+
+#### Micro blogging
+
+It should similar to tweets in twitter. It is called `quick-post (qpost)` in this social network.
+You can attach media file to a qpost.
+Limits:
+
 - text (limit: max 300 symbols);
-- image (Size 1024x512px	Max upload size of 5Mb (or 3Mb for animated GIFs). Supports PNG, GIF or JPEG);
-- video (Max length of video uploads	2'20" (140 seconds)	MP4 video format with H264 format with AAC audio. Max upload of 512MB);
+- medias:
+    - number (max: 10 images);
+    - images:
+        - dimensions (1024x512px);
+        - size (max upload size of 5Mb (or 3Mb for animated GIFs));
+        - extensions (supports PNG, GIF or JPEG);
+    - videos:
+        - size (max upload size of 512MB);
+        - length (Max length of video uploads	2'20" (140 seconds));
+        - extensions (supports MP4 video format with H264 format with AAC audio);
 
-#### Commenting of quick-posts
+The service supports commenting qposts and reacting on qposts.
 
-### Feed of quick-posts
+#### Macro blogging
 
-### Posting posts on own page
+Limits:
 
-It can contain:
 - text (limit: max 65000 symbols);
-- images
-    - Size 1024x512px;
-    - Max upload size of 5Mb (or 3Mb for animated GIFs);
-    - Supports PNG, GIF or JPEG;
-    - Max number of images per post is 80;
-- video (Max length of video uploads	2'20" (140 seconds)	MP4 video format with H264 format with AAC audio. Max upload of 512MB);
+- medias:
+    - number (max: 80 images);
+    - images
+        - dimensions 1024x512px;
+        - size (max upload size of 5Mb (or 3Mb for animated GIFs));
+        - extensions (supports PNG, GIF or JPEG);
+    - videos:
+        - size (max upload size of 512MB);
+        - length (Max length of video uploads	2'20" (140 seconds));
+        - extensions (supports MP4 video format with H264 format with AAC audio);
 
-#### Commenting of posts
+#### ❗Channels
 
-### Messaging
 
-#### Direct messages
-
-#### Group messages
-
-### Groups
-It is like facebook or vkontakte groups
-
-#### Internal posts
-
-##### Commenting of internal posts
-
-#### Forum with topics
-
-#### Gallery
-
-It contains group's albums.
-
-### Articles
+#### ❓ Articles
 
 It is similar to pages in wikipedia.
 But it should have versioning system not based on language like in wikipedia.
 But it is based on authority (you can edit articles that you created and the articles that the owner allowed you to edit it).
 But you can fork any article you have at least read-only access to.
+
+
+### ❗Messages
+
+Features:
+
+- scheduled messages;
+- send message when addressant is online;
+- reactions on messages;
+- share geolocation:
+    - selected location;
+    - live location;
+- voice messages;
+- video messages;
+
+#### ❗Direct messages
+
+#### ❗Anonymous chats
+
+#### ❗Group messages
+
+Features:
+
+- pools in message groups;
+
+### Groups
+
+It is place of communication of a community.
+It has topics like in a forum where a participants can discuss on selected topic.
+
+Features:
+
+- internal content (qposts, posts, albums, pools, etc);
+- topics;
+- custom roles based on list of basic roles;
+
+## Decisions
+
+### ID generation
+
+The best fit for the social network ID is numeric ID.
+In order to achieve consistency we need to guarantee that IDs would not be repeated in different services because a data is portable in the scope of the network.
+So, [SnowflakeID](https://en.wikipedia.org/wiki/Snowflake_ID) looks like great fit for this purpose 
