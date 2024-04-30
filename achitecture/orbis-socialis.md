@@ -17,6 +17,14 @@ Besides, this service keep actual accounts information by requesting PDSs of res
 
 #### Entities
 
+#### Technology stack:
+
+Programming language: golang
+
+Transport: gRPC
+
+Databases:
+
 ### Ingress Service
 
 Golang gRPC  server for writing commands.
@@ -166,6 +174,14 @@ enum BaseRole {
 | *created_at        | datetime (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
 | last_modified_at   | datetime (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
 
+#### Technology stack:
+
+Programming language: golang
+
+Transport: gRPC
+
+Databases:
+
 ### API Gateway
 
 Golang REST API server for retrieving data by queries and act as proxy for writing commands.
@@ -207,6 +223,14 @@ It is one of key services of the Orbis Socialis. It holds all main functionality
     - endpoint for retrieving the group's albums
     - endpoint for retrieving the group's album's medias
 
+#### Technology stack:
+
+Programming language: golang
+
+Transport: REST API
+
+Databases:
+
 ### Admin
 
 SSR frontend application with REST API endpoints.
@@ -225,6 +249,14 @@ The service provides functionality for configuring the Orbis Socialis and for se
 | *id                          | numeric string                  |
 | *email                       | email string                    |
 | *password hash               | string                          |
+
+#### Technology stack:
+
+Programming language: golang
+
+Transport: REST API+SSR
+
+Databases:
 
 ## Decisions
 

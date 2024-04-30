@@ -70,6 +70,14 @@ Domain name requirements:
 | *password_hash           | string                                                             |
 | *url                     | URL string                                                         |
 
+#### Technology stack:
+
+Programming language: golang
+
+Transport: gRPC
+
+Databases: PostgreSQL
+
 ### Admin
 
 SSR frontend application with REST API endpoints.
@@ -78,5 +86,13 @@ NextJS is good technology for this service.
 #### Description
 
 The service provides functionality for configuring the PDS.
+
+#### Technology stack:
+
+Programming language: golang
+
+Transport: REST API+SSR
+
+Databases:
 
 ## Decisions

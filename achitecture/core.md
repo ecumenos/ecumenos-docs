@@ -8,9 +8,17 @@ It is the only centralized part of the application.
 
 It is golang gRPC server.
 
-❗#### Endpoints
+#### ❗Endpoints
 
-❗#### Entities
+#### ❗ Entities
+
+#### Technology stack:
+
+Programming language: golang
+
+Transport: gRPC
+
+Databases:
 
 ### ❗Payments service
 
@@ -19,6 +27,14 @@ It is golang gRPC(❓) server.
 #### ❗Endpoints
 
 #### ❗Entities
+
+#### Technology stack:
+
+Programming language: golang
+
+Transport: gRPC
+
+Databases:
 
 ### ❗Plugin Store
 
@@ -31,6 +47,14 @@ Possible plugins:
 #### ❗Endpoints
 
 #### ❗Entities
+
+#### Technology stack:
+
+Programming language: golang
+
+Transport: gRPC
+
+Databases:
 
 ### ❗Zookeepers Manager
 
@@ -45,6 +69,14 @@ Besides, for some plugins it is okay to use resources of user's machine. So, it 
 #### ❗Endpoints
 
 #### ❗Entities
+
+#### Technology stack:
+
+Programming language: golang
+
+Transport: gRPC
+
+Databases:
 
 ### ❗iOS application
 

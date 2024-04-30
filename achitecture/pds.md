@@ -34,6 +34,14 @@ The service interacting with Orbis Socialis (pl.).
 - quick-posts:
 - groups:
 
+#### Technology stack:
+
+Programming language: golang
+
+Transport: REST API
+
+Databases: Redis,
+
 ### Blockchain Peer
 
 The service is golang gRPC server that serves as blockchain peer.
@@ -111,7 +119,13 @@ Structure of a block should looks like:
 
 #### Entities
 
-####
+#### Technology stack:
+
+Programming language: golang
+
+Transport: gRPC
+
+Databases: SQLite
 
 ### Accounts Service
 
@@ -126,6 +140,14 @@ The service dedicated for:
 - authorization & authentication functionality
 - interaction with other PDS clusters
 - mailer functionality
+
+#### Technology stack:
+
+Programming language: golang
+
+Transport: gRPC
+
+Databases: TigerGraph
 
 #### Endpoints:
 
@@ -170,7 +192,7 @@ Handle name requirements:
     - `Α-Ω`;
     - `α-ω`;
     - `1-9`;
-    - `ē`, `ā`, `ō`, `ī`, `ū`, `Č`, `č`, `Ď`, `ď`, `É`, `é`, `Ě`, `ě`, `Ř`, `ř`, `Š`, `š`, `Á`, `á`, `Ą`, `ą`, `Ć`, `ć`, `Ę`, `ę`, `Ł`, `ł`, `Ń`, `ń`, `Ó`, `ó`, `Ś`, `ś`, `Ź`, `ź`, `Ż`, `ż`, `ẞ`, `ß`, `Ä`, `ä`, `Ö`, `ö`, `Ü`, `ü`, `Æ`, `æ`, `Ø`, `ø`, `Å`, `å`;
+    - `Ē`, `ē`, `Ā`, `ā`, `Ō`, `ō`, `Ī`, `ī`, `Ū`, `ū`, `Č`, `č`, `Ď`, `ď`, `É`, `é`, `Ě`, `ě`, `Í`, `í`, `Ř`, `ř`, `Š`, `š`, `Á`, `á`, `Ą`, `ą`, `Ć`, `ć`, `Ę`, `ę`, `Ł`, `ł`, `Ň`, `ň`, `Ń`, `ń`, `Ó`, `ó`, `Ś`, `ś`, `Ť`, `ť`, `Ú`, `ú`, `Ů`, `ů`, `Ý`, `ý`, `Ž`, `ž`, `Ź`, `ź`, `Ż`, `ż`, `ẞ`, `ß`, `Ä`, `ä`, `Ö`, `ö`, `Ü`, `ü`, `Æ`, `æ`, `Ø`, `ø`, `Å`, `å`;
     - special chars: `_`, `-`, `+`, `$`, `€`, `£`, `¥`, `₣`, `₹`, `₪`, `₩`, `₴`;
 
 Address composition: `{{handle_name}}@{{domain_name}}#{{zookeeper_suffix}}`
@@ -255,6 +277,14 @@ NextJS is good technology for this service.
 #### Description
 
 The service provides functionality for configuring the PDS.
+
+#### Technology stack:
+
+Programming language: golang
+
+Transport: REST API+SSR
+
+Databases: PostgreSQL
 
 ## Decisions
 
