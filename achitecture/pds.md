@@ -16,6 +16,7 @@ The service interacting with Orbis Socialis (pl.).
 
 #### Endpoints
 
+- endpoint for validation of PDS & Orbis Socialis invite codes(`POST /invite-code/validation` use body for distinguishing PDS & Orbis Socialis);
 - search:
     - endpoint for searching of Orbis Socialis content (use Orbis Socialis search);
     - endpoint for searching accounts;
@@ -147,7 +148,7 @@ Programming language: golang
 
 Transport: gRPC
 
-Databases: TigerGraph
+Databases: ArangoDB
 
 #### Endpoints:
 
@@ -155,26 +156,47 @@ Databases: TigerGraph
 
 ##### Account Entity
 
-| Field name        | Type                                                               |
-|-------------------|--------------------------------------------------------------------|
-| *id               | numeric string                                                     |
-| *handle_name      | string                                                             |
-| *address          | string                                                             |
-| *full_name        | string (max: 50)                                                   |
-| emails            | array of email strings                                             |
-| phone_numbers     | array of phone number strings                                      |
-| avatar_image_url  | URL string                                                         |
-| header_image_url  | URL string                                                         |
-| bio               | string (max: 1024)                                                 |
-| countries         | array of lowercased strings (ISO 3166-1 alpha-3 country code)      |
-| languages         | array of lowercased strings (ISO 639-2:1998 alpha-3 language code) |
-| *created_at       | datetime (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
-| last_modified_at  | datetime (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
-| *password_hash    | string                                                             |
-| *public_key       | string                                                             |
-| *private_key      | encrypted string                                                   |
-| birthday          | datetime (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
-| sex               | `enum Sex`                                                         |
+| Field name                        | Type                                                               |
+|-----------------------------------|--------------------------------------------------------------------|
+| *id                               | numeric string                                                     |
+| *handle_name                      | string                                                             |
+| *address                          | string                                                             |
+| *full_name                        | string (max: 50)                                                   |
+| emails                            | array of email strings                                             |
+| phone_numbers                     | array of phone number strings                                      |
+| avatar_image_url                  | URL string                                                         |
+| header_image_url                  | URL string                                                         |
+| bio                               | string (max: 1024)                                                 |
+| countries                         | array of lowercased strings (ISO 3166-1 alpha-3 country code)      |
+| languages                         | array of lowercased strings (ISO 639-2:1998 alpha-3 language code) |
+| *created_at                       | datetime                                                           |
+| last_modified_at                  | datetime                                                           |
+| last_seen_at                      | datetime                                                           |
+| *password_hash                    | string                                                             |
+| *public_key                       | string                                                             |
+| *private_key                      | encrypted string                                                   |
+| birthday                          | datetime                                                           |
+| sex                               | `enum Sex`                                                         |
+| *account_id                       | numeric string                                                     |
+| *perm_read_profile_info           | enum `Permission`                                                  |
+| *perm_read_profile_posts          | enum `Permission`                                                  |
+| *perm_comment_profile_posts       | enum `Permission`                                                  |
+| *perm_react_profile_posts         | enum `Permission`                                                  |
+| *perm_read_profile_qposts         | enum `Permission`                                                  |
+| *perm_comment_profile_qposts      | enum `Permission`                                                  |
+| *perm_react_profile_qposts        | enum `Permission`                                                  |
+| *notification_direct_messages     | boolean                                                            |
+| *notification_group_messages      | boolean                                                            |
+| *notification_followed_content    | boolean                                                            |
+| *notification_group_actions       | boolean                                                            |
+| *notification_group_content       | boolean                                                            |
+| *notification_group_topics        | boolean                                                            |
+| *notification_group_topic_records | boolean                                                            |
+| *theme_color_mode                 | enum `ColorMode`                                                   |
+| *theme_zoom                       | integer (from 50% to 200%)                                         |
+| *theme_msg_format                 | enum `MessageFormat`                                               |
+| *theme_name_format                | enum `NameFormat`                                                  |
+| *time_format                      | 12/24                                                              |
 
 ```ts
 enum Sex {
@@ -183,53 +205,11 @@ enum Sex {
 }
 ```
 
-Handle name requirements:
-- min length: 3;
-- max length: 50;
-- allowed chars:
-    - `A-Z`;
-    - `a-z`;
-    - `Α-Ω`;
-    - `α-ω`;
-    - `1-9`;
-    - `Ē`, `ē`, `Ā`, `ā`, `Ō`, `ō`, `Ī`, `ī`, `Ū`, `ū`, `Č`, `č`, `Ď`, `ď`, `É`, `é`, `Ě`, `ě`, `Í`, `í`, `Ř`, `ř`, `Š`, `š`, `Á`, `á`, `Ą`, `ą`, `Ć`, `ć`, `Ę`, `ę`, `Ł`, `ł`, `Ň`, `ň`, `Ń`, `ń`, `Ó`, `ó`, `Ś`, `ś`, `Ť`, `ť`, `Ú`, `ú`, `Ů`, `ů`, `Ý`, `ý`, `Ž`, `ž`, `Ź`, `ź`, `Ż`, `ż`, `ẞ`, `ß`, `Ä`, `ä`, `Ö`, `ö`, `Ü`, `ü`, `Æ`, `æ`, `Ø`, `ø`, `Å`, `å`;
-    - special chars: `_`, `-`, `+`, `$`, `€`, `£`, `¥`, `₣`, `₹`, `₪`, `₩`, `₴`;
-
-Address composition: `{{handle_name}}@{{domain_name}}#{{zookeeper_suffix}}`
-
-Example:
-
-zookeeper_suffix=zk_ukr1,
-handle_name=john_doe
-domain_name=lviv.ukr1
-
-address=john_doe@lviv.ukr1#zk_ukr1
-
-##### Account Setting Entity
-
-| Field name                   | Type                            |
-|------------------------------|---------------------------------|
-| *account_id                  | numeric string                  |
-| *perm_read_profile_info      | enum `Permission`               |
-| *perm_read_profile_posts     | enum `Permission`               |
-| *perm_comment_profile_posts  | enum `Permission`               |
-| *perm_react_profile_posts    | enum `Permission`               |
-| *perm_read_profile_qposts    | enum `Permission`               |
-| *perm_comment_profile_qposts | enum `Permission`               |
-| *perm_react_profile_qposts   | enum `Permission`               |
-| notif_❓                     |                                 |
-| *theme_color_mode            | enum `ColorMode`                |
-| *theme_zoom                  | integer (from 50% to 200%)      |
-| *theme_msg_format            | enum `MessageFormat`            |
-| *theme_name_format           | enum `NameFormat`               |
-| *time_format                 | 12/24                           |
-| *timezone                    | string ("Continent/City" (e.g., "America/New_York", "Europe/London")) |
-
 ```ts
 enum Permission {
     Public
-    Limited
     Private
+    OnlyMe
 }
 ```
 
@@ -254,6 +234,30 @@ enum NameFormat {
 }
 ```
 
+Handle name requirements:
+- min length: 3;
+- max length: 50;
+- allowed chars:
+    - `A-Z`;
+    - `a-z`;
+    - `Α-Ω`;
+    - `α-ω`;
+    - `1-9`;
+    - `Ē`, `ē`, `Ā`, `ā`, `Ō`, `ō`, `Ī`, `ī`, `Ū`, `ū`, `Č`, `č`, `Ď`, `ď`, `É`, `é`, `Ě`, `ě`, `Í`, `í`, `Ř`, `ř`, `Š`, `š`, `Á`, `á`, `Ą`, `ą`, `Ć`, `ć`, `Ę`, `ę`, `Ł`, `ł`, `Ň`, `ň`, `Ń`, `ń`, `Ó`, `ó`, `Ś`, `ś`, `Ť`, `ť`, `Ú`, `ú`, `Ů`, `ů`, `Ý`, `ý`, `Ž`, `ž`, `Ź`, `ź`, `Ż`, `ż`, `ẞ`, `ß`, `Ä`, `ä`, `Ö`, `ö`, `Ü`, `ü`, `Æ`, `æ`, `Ø`, `ø`, `Å`, `å`;
+    - special chars: `_`, `-`, `+`, `$`, `€`, `£`, `¥`, `₣`, `₹`, `₪`, `₩`, `₴`;
+
+Address composition: `@{{handle_name}}#{{domain_name}}::{{zookeeper_suffix}}`
+
+Example:
+
+zookeeper_suffix=zk_ukr1,
+handle_name=john_doe
+domain_name=lviv.ukr1
+
+account address=@john_doe#lviv.ukr1::zk_ukr1
+orbis_socialis=#lviv.ukr1::zk_ukr1
+zookeeper=::zk_ukr1
+
 ##### Sessions
 
 jwt.io
@@ -261,13 +265,12 @@ jwt.io
 | Field name                   | Type                                                    |
 |------------------------------|---------------------------------------------------------|
 | *id                          | numeric string                                          |
-| ❓provider_id                | google/facebook/cognito                                 |
-| ❓provider_user_id           | string                                                  |
+| *provider_pds_id             | numeric string                                          |
 | *account_id                  | numeric string                                          |
 | *token                       | string                                                  |
 | *refresh_token               | string                                                  |
-| *expired_at                  | datetime (RFC3339, example "2006-01-02T15:04:05Z07:00") |
-| *created_at                  | datetime (RFC3339, example "2006-01-02T15:04:05Z07:00") |
+| *expired_at                  | datetime                                                |
+| *created_at                  | datetime                                                |
 
 ### Admin
 
@@ -304,10 +307,10 @@ We have:
     - PDS1 (seed=1); => resultingSeed(2, 1)
 
 Besides, each PDS store ID that was created by it and never generate this ID again.
-Keep in mind that an accounts are portable and the account that was created in the PDS could be transfered to some another PDS.
+Keep in mind that an accounts are portable and the account that was created in the PDS could be transferred to some another PDS.
 
 ### Cryptography Security
 
-Encryption is done by some asymetric algorithm.
+Encryption is done by some asymmetric algorithm.
 Public key is stored at account profile.
-Private key is encrypted by symethric encryption with account's password and stored in account profile.
+Private key is encrypted by symmetric encryption with account's password and stored in account profile.

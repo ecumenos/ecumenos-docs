@@ -85,8 +85,8 @@ It is one of key services of the Orbis Socialis. It holds all main functionality
 | *description       | string                                                             |
 | *profile_image_url | URL string                                                         |
 | *header_image_url  | URL string                                                         |
-| *created_at        | datetime (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
-| last_modified_at   | datetime (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| *created_at        | datetime                                                           |
+| last_modified_at   | datetime                                                           |
 | privacy            | enum `GroupPrivacy`                                                |
 
 ```ts
@@ -105,8 +105,8 @@ enum GroupPrivacy {
 | *role              | enum `BaseRole`                                                    |
 | *name              | string                                                             |
 | *priority          | integer                                                            |
-| *created_at        | datetime (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
-| last_modified_at   | datetime (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| *created_at        | datetime                                                           |
+| last_modified_at   | datetime                                                           |
 
 ```ts
 enum BaseRole {
@@ -127,52 +127,59 @@ enum BaseRole {
 | *group_id             | numeric string                                                     |
 | *base_role            | `enum BaseRole`                                                    |
 | *group_custom_role_id | numeric string                                                     |
-| *joined_at            | datetime (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
-| last_modified_at      | datetime (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| *joined_at            | datetime                                                           |
+| last_modified_at      | datetime                                                           |
 
 ##### Group Post
 
 | Field name         | Type                                                               |
 |--------------------|--------------------------------------------------------------------|
 | *id                | numeric string                                                     |
-| *created_at        | datetime (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
-| last_modified_at   | datetime (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| *created_at        | datetime                                                           |
+| last_modified_at   | datetime                                                           |
 | *group_id          | numeric string                                                     |
+| creator_account_id | numeric string                                                     |
+| title              | string (max: 100 symbols)                                          |
 
 ##### Topic
 
 | Field name         | Type                                                               |
 |--------------------|--------------------------------------------------------------------|
 | *id                | numeric string                                                     |
-| *created_at        | datetime (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
-| last_modified_at   | datetime (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| *created_at        | datetime                                                           |
+| last_modified_at   | datetime                                                           |
 | *group_id          | numeric string                                                     |
+| creator_account_id | numeric string                                                     |
+| title              | string (max: 100 symbols)                                          |
 
 ##### Topic Record
 
 | Field name         | Type                                                               |
 |--------------------|--------------------------------------------------------------------|
 | *id                | numeric string                                                     |
-| *created_at        | datetime (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
-| last_modified_at   | datetime (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| *created_at        | datetime                                                           |
+| last_modified_at   | datetime                                                           |
 | *group_id          | numeric string                                                     |
+| creator_account_id | numeric string                                                     |
 
 ##### Group Album
 
 | Field name         | Type                                                               |
 |--------------------|--------------------------------------------------------------------|
 | *id                | numeric string                                                     |
-| *created_at        | datetime (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
-| last_modified_at   | datetime (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| *created_at        | datetime                                                           |
+| last_modified_at   | datetime                                                           |
 | *group_id          | numeric string                                                     |
+| creator_account_id | numeric string                                                     |
 
 ##### Media
 
 | Field name         | Type                                                               |
 |--------------------|--------------------------------------------------------------------|
 | *id                | numeric string                                                     |
-| *created_at        | datetime (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
-| last_modified_at   | datetime (RFC3339, example "2006-01-02T15:04:05Z07:00")            |
+| *created_at        | datetime                                                           |
+| last_modified_at   | datetime                                                           |
+| creator_account_id | numeric string                                                     |
 
 #### Technology stack:
 
@@ -192,6 +199,7 @@ It is one of key services of the Orbis Socialis. It holds all main functionality
 
 #### Endpoints
 
+- endpoint for validation of invite code (`validateInviteCode`);
 - search (single endpoint):
     - filters:
         - by type
