@@ -148,9 +148,36 @@ Programming language: golang
 
 Transport: gRPC
 
-Databases: ArangoDB
+Databases: ArangoDB, redis
 
 #### Endpoints:
+
+- accounts:
+    - endpoint for creation account (`createAccount`);
+    - endpoint for retrieving accounts information (`getAccounts`);
+    - endpoint for modifying account information (`modifyAccount`);
+    - endpoint for deleting account (`deleteAccount`);
+    - endpoint for changing account's password (`changeAccountPassword`);
+- auth:
+    - endpoint for authorization (`signIn`);
+    - endpoint for prolongation of a sessions (`refreshSession`);
+    - endpoint for closing a sessions (`signOut`);
+    - endpoint for retrieving information about session activities (`getSessions`);
+- series:
+    - endpoint for creation of a seria (`createSeria`);
+    - endpoint for retrieving a series (`getSeries`);
+    - endpoint for modifying a series (`modifySeria`);
+    - endpoint for deleting a series (`deleteSeria`);
+- posts:
+    - endpoint for creation of a post (`createPost`);
+    - endpoint for retrieving a posts (`getPosts`);
+    - endpoint for modifying a posts (`modifyPost`);
+    - endpoint for deleting a posts (`deletePost`);
+- qposts:
+    - endpoint for creation of a qpost (`createQPost`);
+    - endpoint for retrieving a qposts (`getQPosts`);
+    - endpoint for modifying a qposts (`modifyQPost`);
+    - endpoint for deleting a qposts (`deleteQPost`);
 
 #### Entities
 

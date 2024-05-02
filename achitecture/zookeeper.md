@@ -31,24 +31,30 @@ This service has next functionality:
 
 #### Endpoints
 
-- endpoint for checking if the service is alive & getting service's information (`getInfo`)
-- endpoint for registration the holder account (`registerHolder`);
-- endpoint for confirmation of registration the holder account (`confirmHolderRegistration`);
-- endpoint for modifying of the holder account (`modifyHolder`);
-- endpoint for changing a password of the holder account (`changeHolderPassword`);
-- endpoint for retrieving holder account information (`getHolder`);
-- endpoint for deleting holder account information (`deleteHolder`);
-- endpoint for signing in (`signIn`);
-- endpoint for refreshing token (`refreshToken`);
-- endpoint for signing out (`signOut`);
-- endpoint for retrieving list of PDSs (`getPDSsList`);
-- endpoint for retrieving list of Orbises Socialis (`getOrbisesSocialisList`);
-- endpoint for retrieving list of Zookeepers (`getZookeepersList`);
-- endpoint for creation of record of new Zookeeper (`createZookeeper`);
-- endpoint for joining the waitlist for PDS registration (`joinWaitlistOfPDSRegistration`);
-- endpoint for registration of PDS instance (`registerPDS`);
-- endpoint for joining the waitlist for Orbis Socialis registration (`joinWaitlistOfOrbisSocialisRegistration`);
-- endpoint for registration of Orbis Socialis instance (`registerOrbisSocialis`);
+- System:
+    - endpoint for checking if the service is alive & getting service's information (`getInfo`)
+- Holders:
+    - endpoint for registration the holder account (`registerHolder`);
+    - endpoint for confirmation of registration the holder account (`confirmHolderRegistration`);
+    - endpoint for modifying of the holder account (`modifyHolder`);
+    - endpoint for changing a password of the holder account (`changeHolderPassword`);
+    - endpoint for retrieving holder account information (`getHolder`);
+    - endpoint for deleting holder account information (`deleteHolder`);
+    - auth:
+        - endpoint for signing in (`signIn`);
+        - endpoint for refreshing token (`refreshToken`);
+        - endpoint for signing out (`signOut`);
+- Zookeepers:
+    - endpoint for retrieving list of Zookeepers (`getZookeepersList`);
+    - endpoint for creation of record of new Zookeeper (`registerZookeeper`);
+- PDSs:
+    - endpoint for retrieving list of PDSs (`getPDSsList`);
+    - endpoint for joining the waitlist for PDS registration (`joinWaitlistOfPDSRegistration`);
+    - endpoint for registration of PDS instance (`registerPDS`);
+- Orbises Socialis:
+    - endpoint for retrieving list of Orbises Socialis (`getOrbisesSocialisList`);
+    - endpoint for joining the waitlist for Orbis Socialis registration (`joinWaitlistOfOrbisSocialisRegistration`);
+    - endpoint for registration of Orbis Socialis instance (`registerOrbisSocialis`);
 
 #### Entities
 
