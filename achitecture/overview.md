@@ -209,6 +209,11 @@ But it should have versioning system not based on language like in wikipedia.
 But it is based on authority (you can edit articles that you created and the articles that the owner allowed you to edit it).
 But you can fork any article you have at least read-only access to.
 
+#### Offerings
+
+It looks like album content type but it includes price and initial currency.
+This type of content dedicated for internet shops but without payment. It just makes easy to use this service as an ecommerce platform.
+Besides, it allows for sales to set prices & description easier than it is for other content type records.
 
 ### ❗Messages
 
@@ -237,6 +242,7 @@ Features:
 
 It is place of communication of a community.
 It has topics like in a forum where a participants can discuss on selected topic.
+Groups must be portable like accounts are.
 
 Features:
 
@@ -250,7 +256,34 @@ Features:
 
 The best fit for the social network ID is numeric ID.
 In order to achieve consistency we need to guarantee that IDs would not be repeated in different services because a data is portable in the scope of the network.
-So, [SnowflakeID](https://en.wikipedia.org/wiki/Snowflake_ID) looks like great fit for this purpose 
+So, [SnowflakeID](https://en.wikipedia.org/wiki/Snowflake_ID) looks like great fit for this purpose.
+
+It has golang implementation [github.com/bwmarrin/snowflake](https://pkg.go.dev/github.com/bwmarrin/snowflake@v0.3.0).
+Ir requires node (int64). But it must be in range between 0 and 1023.
+
+```go
+node := 
+n, err := snowflake.NewNode(node)
+if err != nil {
+    return nil, err
+}
+```
+
+Each node in PDS's network would have twin seed source:
+- zookeeper seed;
+- PDS own seed;
+
+For example:
+We have:
+- Zookeeper1 (seed=1):
+    - PDS1 (seed=1); => resultingSeed(1, 1)
+    - PDS2 (seed=2); => resultingSeed(1, 2)
+    - PDS3 (seed=3); => resultingSeed(1, 3)
+- Zookeeper2 (seed=2):
+    - PDS1 (seed=1); => resultingSeed(2, 1)
+
+Besides, each PDS store ID that was created by it and never generate this ID again.
+Keep in mind that an accounts are portable and the account that was created in the PDS could be transferred to some another PDS.
 
 ### 2 factor Authorization
 
@@ -264,7 +297,9 @@ Client will generate unique string each time for each request. Then the server s
 
 When a client submits a duplicate idempotency key, we should return 409 CONFLICT.
 
-### Have consistency with datetime format
+### Formats
+
+#### Datetime format
 
 Use strings for timestamps, not numbers like milliseconds-since-epoch. Human readability matters! Someone glancing at "2023-12-21T11:17:12.34Z" might notice that it's a month in the future; someone glancing at 1703157432340 will not.
 
@@ -284,6 +319,29 @@ I don't see it in golang `time` library, so we need to create custom one
 var format = "2006-01-02T15:04:05.999Z"
 var timestamp = time.Now().UTC().Format(format)
 ```
+
+#### Country code format
+
+We use lowercased ISO 3166-1 alpha-3 country code.
+
+Example: ukr, usa, deu, gbr, etc.
+
+
+#### Language code format
+
+We use lowercased ISO 639-2:1998 alpha-3 language code.
+
+Example: ukr, eng, deu, fra, etc.
+
+#### Currency code format
+
+We use lowercased ISO 4217 currency code.
+
+Example: usd, uah, eur, etc.
+
+#### Geolocation
+
+We store geolocation as a [longitude, latitude] where `longitude` is decimal and `latitude` is decimal.
 
 ### Use structured error format
 

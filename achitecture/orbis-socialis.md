@@ -25,6 +25,99 @@ Transport: gRPC
 
 Databases:
 
+### Blockchain Peer
+
+The service is golang gRPC server that serves as blockchain peer.
+
+#### Description
+The service dedicated for:
+- storing of chains of actions with groups & channels (creation, deletation, transitions). It is sync with other Orbises Socialis;
+- storing state of location all groups & channels (World State);
+
+Good choice for storage is local instance of SQLite.
+Use `MD6-256` as hash function.
+
+When the service is starting up it calls zookeeper to get full list of Orbises Socialis.
+After the service call validator Orbises Socialis from the list to get last transactions from shutting down timepoint.
+Then transactions are applied and World State is updated.
+After the service can process requests.
+
+Validator is chosen by zookeeper. Beside, zookeeper should check status of all Orbises Socialis to choose validator by the best way for next time.
+When the service call some other service and it doesn't response for 30s it should call zookeeper to report it. Then zookeeper do the request by itself and if it doesn't response it write this information to the register and this information will be considered next time when validator is choosing.
+
+#### How the Blockchain works
+
+It is a blockchain network for storing groups's & channels references.
+The network should be synchronized inside of itself.
+All peers should store full history of transactions.
+Besides, it should also store "state of world". It is current state of data inside of the distributed ledger.
+
+Structure of state of world entities:
+
+```json
+{
+    "t": 0,
+    "id": 1234567890,
+    "oid": 3456789012
+}
+```
+
+Where `t` = `entity type`, `id` = `entity's id`, `oid` = `orbis socialis id`.
+
+```ts
+enum EntityType {
+    Group = 0,
+    Channel = 1,
+}
+```
+
+Transactions are operations with that objects.
+Structure of a transaction should looks like:
+```json
+{
+    "op": "create" | "transit" | "delete",
+    "field": "aid" | "pid" | "oid",
+    "value": "...." | null "{{t}}::{{id}}::{{oid}}",
+    "identifier": "{{aid}}" | null
+}
+```
+
+Structure of a block should looks like:
+```json
+{
+    "header": {
+        "hash": "9071d70b9e9440078e4ddf7d2cb19ffd4c04a04b75bbbfba9eae3216223ce9f2",
+        "parent_block_hash": "9b90c5a68b78e1dbf215e66102df54f60855bfcd843318627f13cf84896a2a39",
+        "timestamp": "1713871179828"
+    },
+    "data": {
+        "op": "create",
+        "field": null,
+        "value": "0::1234567890::3456789012",
+        "identifier": null
+    }
+}
+```
+
+#### Endpoints
+
+- endpoint for getting service status (`GET/health`)
+- endpoint for getting PDSs with statuses
+- endpoint for creating transaction (`POST/txs`)
+- endpoint for running validation in validator (`POST/validate`)
+- endpoint for retrieving blocks after some block hash (`GET/blocks?from=9b90c5a68b78e1dbf215e66102df54f60855bfcd843318627f13cf84896a2a39`)
+- endpoint for getting state of entities (`GET/entities?t=0&ids=1234567890,1234567891,1234567892`) it should works only with IDs (`ids`) and type (`t`).
+
+#### Entities
+
+#### Technology stack:
+
+Programming language: golang
+
+Transport: gRPC
+
+Databases: SQLite
+
 ### Ingress Service
 
 Golang gRPC  server for writing commands.
@@ -88,6 +181,7 @@ It is one of key services of the Orbis Socialis. It holds all main functionality
 | *created_at        | datetime                                                           |
 | last_modified_at   | datetime                                                           |
 | privacy            | enum `GroupPrivacy`                                                |
+| is_anonymous       | boolean                                                            |
 
 ```ts
 enum GroupPrivacy {
@@ -130,47 +224,39 @@ enum BaseRole {
 | *joined_at            | datetime                                                           |
 | last_modified_at      | datetime                                                           |
 
-##### Group Post
-
-| Field name         | Type                                                               |
-|--------------------|--------------------------------------------------------------------|
-| *id                | numeric string                                                     |
-| *created_at        | datetime                                                           |
-| last_modified_at   | datetime                                                           |
-| *group_id          | numeric string                                                     |
-| creator_account_id | numeric string                                                     |
-| title              | string (max: 100 symbols)                                          |
-
 ##### Topic
 
-| Field name         | Type                                                               |
-|--------------------|--------------------------------------------------------------------|
-| *id                | numeric string                                                     |
-| *created_at        | datetime                                                           |
-| last_modified_at   | datetime                                                           |
-| *group_id          | numeric string                                                     |
-| creator_account_id | numeric string                                                     |
-| title              | string (max: 100 symbols)                                          |
+| Field name          | Type                                                               |
+|---------------------|--------------------------------------------------------------------|
+| *id                 | numeric string                                                     |
+| *created_at         | datetime                                                           |
+| last_modified_at    | datetime                                                           |
+| *group_id           | numeric string                                                     |
+| *creator_account_id | numeric string                                                     |
+| *title              | string (max: 100 symbols)                                          |
+| *profile_image_url  | URL string                                                         |
 
 ##### Topic Record
 
-| Field name         | Type                                                               |
-|--------------------|--------------------------------------------------------------------|
-| *id                | numeric string                                                     |
-| *created_at        | datetime                                                           |
-| last_modified_at   | datetime                                                           |
-| *group_id          | numeric string                                                     |
-| creator_account_id | numeric string                                                     |
+| Field name          | Type                                                               |
+|---------------------|--------------------------------------------------------------------|
+| *id                 | numeric string                                                     |
+| *created_at         | datetime                                                           |
+| last_modified_at    | datetime                                                           |
+| *group_id           | numeric string                                                     |
+| *creator_account_id | numeric string                                                     |
+| *topic_id           | numeric string                                                     |
+| *text_content       | string                                                             |
+| *media_urls         | URL strings                                                        |
 
-##### Group Album
+##### Channel
 
-| Field name         | Type                                                               |
-|--------------------|--------------------------------------------------------------------|
-| *id                | numeric string                                                     |
-| *created_at        | datetime                                                           |
-| last_modified_at   | datetime                                                           |
-| *group_id          | numeric string                                                     |
-| creator_account_id | numeric string                                                     |
+| Field name          | Type                                                               |
+|---------------------|--------------------------------------------------------------------|
+| *id                 | numeric string                                                     |
+| *created_at         | datetime                                                           |
+| last_modified_at    | datetime                                                           |
+|
 
 ##### Media
 

@@ -73,9 +73,9 @@ Structure of state of world entities:
 
 ```json
 {
-    "aid": "1234567890",
-    "pid": "2345678901",
-    "oid": "3456789012"
+    "aid": 1234567890,
+    "pid": 2345678901,
+    "oid": 3456789012
 }
 ```
 
@@ -98,7 +98,7 @@ Structure of a block should looks like:
     "header": {
         "hash": "9071d70b9e9440078e4ddf7d2cb19ffd4c04a04b75bbbfba9eae3216223ce9f2",
         "parent_block_hash": "9b90c5a68b78e1dbf215e66102df54f60855bfcd843318627f13cf84896a2a39",
-        "timestamp": "1713871179828"
+        "timestamp": 1713871179828
     },
     "data": {
         "op": "create",
@@ -194,8 +194,9 @@ Databases: ArangoDB, redis
 | avatar_image_url                  | URL string                                                         |
 | header_image_url                  | URL string                                                         |
 | bio                               | string (max: 1024)                                                 |
-| countries                         | array of lowercased strings (ISO 3166-1 alpha-3 country code)      |
-| languages                         | array of lowercased strings (ISO 639-2:1998 alpha-3 language code) |
+| *countries                        | array of country codes strings                                     |
+| *languages                        | array of language codes strings                                    |
+| location                          | [longitude, latitude]                                              |
 | *created_at                       | datetime                                                           |
 | last_modified_at                  | datetime                                                           |
 | last_seen_at                      | datetime                                                           |
@@ -298,6 +299,45 @@ jwt.io
 | *refresh_token               | string                                                  |
 | *expired_at                  | datetime                                                |
 | *created_at                  | datetime                                                |
+
+##### Post
+
+| Field name                   | Type                                                    |
+|------------------------------|---------------------------------------------------------|
+| *id                          | numeric string                                          |
+| *title                       | string                                                  |
+| *title_language              | language code string                                    |
+| *type                        | string                                                  |
+| *account_id                  | numeric string                                          |
+| *group_id                    | numeric string                                          |
+| *created_at                  | datetime                                                |
+| last_modified_at             | datetime                                                |
+| *media_urls                  | array of URL strings                                    |
+| *text_content                | string                                                  |
+| *text_content_language       | language code string                                    |
+| offering_price               | float64                                                 |
+| offering_currency            | currency code string                                    |
+| *hash_tags                   | array of strings                                        |
+| *mentioned_posts             | array of numeric strings                                |
+| *mentioned_accounts          | array of numeric strings                                |
+| *mentioned_groups            | array of numeric strings                                |
+| *links                       | array of URL strings                                    |
+| *perm_read                   | enum `Permission`                                       |
+| *perm_comment                | enum `Permission`                                       |
+| *perm_react                  | enum `Permission`                                       |
+
+```ts
+enum PostType {
+    Post,
+    QPost,
+    Poll,
+    Event,
+    Offering,
+    Album,
+    Shot,
+    Video,
+}
+```
 
 ### Admin
 
