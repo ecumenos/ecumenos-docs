@@ -252,6 +252,15 @@ Features:
 
 ## Decisions
 
+### Authorization approaches
+
+We should let people to create accounts, read public content, send/receive messages if they don't attached phone number or email address to their accounts.
+
+### Coats of arms
+
+I want to let people to have their own coat of arms on their accounts.
+It is possible that we add some coat of arms generator for creating ones.
+
 ### ID generation
 
 The best fit for the social network ID is numeric ID.

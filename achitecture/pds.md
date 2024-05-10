@@ -128,7 +128,7 @@ Transport: gRPC
 
 Databases: SQLite
 
-### Accounts Service
+### Core
 
 It is golang gRPC server that operates with account's profile data and account's personal posts, quick-posts, and albums.
 
@@ -205,7 +205,7 @@ Databases: ArangoDB, redis
 | *private_key                      | encrypted string                                                   |
 | birthday                          | datetime                                                           |
 | sex                               | `enum Sex`                                                         |
-| *account_id                       | numeric string                                                     |
+| *session_timeout                  | numeric (number of seconds)                                        |
 | *perm_read_profile_info           | enum `Permission`                                                  |
 | *perm_read_profile_posts          | enum `Permission`                                                  |
 | *perm_comment_profile_posts       | enum `Permission`                                                  |
@@ -336,6 +336,27 @@ enum PostType {
     Album,
     Shot,
     Video,
+}
+```
+
+##### PostReaction
+
+| Field name                   | Type                                                    |
+|------------------------------|---------------------------------------------------------|
+| *id                          | numeric string                                          |
+| *created_at                  | datetime                                                |
+| *account_id                  | numeric string                                          |
+| *post_id                     | numeric string                                          |
+| *type                        | enum `PostReactionType`                                 |
+
+```ts
+enum PostReactionType {
+    Agree➕
+    Disagree➖,
+    Laugh😆,
+    Sad😥,
+    Love❤️,
+    Hate😡,
 }
 ```
 
